@@ -170,7 +170,7 @@
       margin-top: 10px;
       margin-left: 10px;
     }
-    
+
     .fullscreen-controls-container {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 4px;
@@ -181,8 +181,9 @@
       gap: 8px;
       min-width: 250px;
       max-width: 300px;
+      z-index: 1500;
     }
-    
+
     .fullscreen-controls-header {
       font-weight: 600;
       font-size: 14px;
@@ -191,7 +192,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .fullscreen-controls-close {
       background: none;
       border: none;
@@ -199,16 +200,16 @@
       cursor: pointer;
       color: #666;
     }
-    
+
     .fullscreen-controls-close:hover {
       color: #000;
     }
-    
+
     .fullscreen-search {
       display: flex;
       gap: 5px;
     }
-    
+
     .fullscreen-search input {
       flex: 1;
       padding: 4px 8px;
@@ -216,7 +217,7 @@
       border-radius: 4px;
       font-size: 13px;
     }
-    
+
     .fullscreen-search button {
       padding: 4px 8px;
       background: var(--secondary);
@@ -226,25 +227,24 @@
       cursor: pointer;
       font-size: 13px;
     }
-    
+
     .fullscreen-layers {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 5px;
       font-size: 13px;
     }
-    
+
     .fullscreen-layer-toggle {
       display: flex;
       align-items: center;
       gap: 5px;
     }
-    
+
     .fullscreen-layer-toggle input {
       margin: 0;
     }
 
-    /* Custom fullscreen toggle button */
     .custom-fullscreen-toggle {
       position: absolute;
       top: 10px;
@@ -261,16 +261,15 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    
+
     .custom-fullscreen-toggle:hover {
       background: white;
     }
-    
+
     .leaflet-fullscreen-on .custom-fullscreen-toggle {
       display: none;
     }
 
-    /* label styling */
     .boundary-label {
       background: rgba(255,255,255,0.9);
       border: 1px solid #555;
@@ -314,18 +313,93 @@
       font-weight: 500;
     }
 
-    /* Focus styles for accessibility */
-    .btn:focus,
-    .form-control:focus,
-    .form-select:focus {
-      box-shadow: 0 0 0 2px rgba(0,120,212,0.5);
-      border-color: var(--secondary);
+    .chart-container {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      box-shadow: var(--shadow);
     }
 
-    /* Leaflet fullscreen adjustments */
-    .leaflet-control-fullscreen a {
+    .chart-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .chart-canvas {
+      width: 100% !important;
+      height: 220px !important;
+    }
+
+    .chart-counts {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    .chart-area-name {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    /* Fullscreen chart container */
+    .fullscreen-chart-container {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #eee;
+    }
+
+    .fullscreen-chart-canvas {
+      width: 100% !important;
+      height: 200px !important;
+    }
+
+    /* ===== Right-side floating Feature Details panel ===== */
+    .side-panel {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      bottom: 12px;
+      width: 360px;
+      max-width: 42vw;
       background: var(--surface);
-      color: var(--text);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      z-index: 1500;
+      display: none;            /* hidden until opened */
+      overflow: auto;
+    }
+
+    .side-panel.open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-panel .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      z-index: 1;
+    }
+
+    .side-panel .attributes {
+      margin-top: 10px;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
     }
 
     /* Responsive adjustments */
@@ -335,14 +409,29 @@
       .container-fluid { height: auto; }
       #map { height: 60vh; }
       .legend-card { bottom: 10px; right: 10px; max-width: 160px; }
-      
+
       .fullscreen-controls-container {
         min-width: 200px;
         max-width: 250px;
       }
-      
+
       .fullscreen-layers {
         grid-template-columns: 1fr;
+      }
+
+      .side-panel {
+        width: 300px;
+        top: 8px;
+        right: 8px;
+        bottom: 8px;
+      }
+
+      .chart-canvas {
+        height: 150px !important;
+      }
+
+      .fullscreen-chart-canvas {
+        height: 140px !important;
       }
     }
 
@@ -350,6 +439,18 @@
       header { padding: 8px 12px; }
       header .brand { flex-direction: column; align-items: flex-start; }
       header img { height: 36px; }
+
+      .side-panel {
+        width: 90%;
+      }
+
+      .chart-canvas {
+        height: 160px !important;
+      }
+
+      .fullscreen-chart-canvas {
+        height: 160px !important;
+      }
     }
   </style>
 </head>
@@ -394,6 +495,13 @@
             <label class="form-label small-muted">Sub Block Boundaries</label>
             <input id="subBlockFile" type="file" accept=".geojson,.json" class="form-control form-control-sm" />
           </div>
+
+          <div class="mb-2">
+            <div id="dropzone" class="dropzone" aria-label="Drag and drop GeoJSON files here">
+              Drag & drop geojson files here or click to select
+            </div>
+          </div>
+
           <div class="d-grid gap-2">
             <button id="loadDataButton" class="btn btn-custom btn-sm" disabled>Load Data (login required)</button>
           </div>
@@ -403,13 +511,22 @@
         <hr>
 
         <div class="sidebar-section">
-          <h6>🔍 Search (Buildings)</h6>
-          <input id="searchInput" type="text" class="form-control form-control-sm mb-2" placeholder="Search by Building ID, Name or Status..." />
+          <h6>🔍 Search (All layers)</h6>
+          <input id="searchInput" type="text" class="form-control form-control-sm mb-2" placeholder="Search Buildings, Zones, Blocks, Subblocks..." />
           <div class="d-grid gap-2">
             <button id="searchBtn" class="btn btn-outline-primary btn-sm">Search</button>
           </div>
           <div id="searchResults" class="mt-2 small-muted"></div>
         </div>
+
+        <!-- === SIDEBAR CHART inserted below Search section as requested === -->
+        <div class="chart-container">
+          <div class="chart-title">Building Statistics</div>
+          <div id="chartAreaName" class="chart-area-name">All Buildings</div>
+          <canvas id="buildingChart" class="chart-canvas"></canvas>
+          <div id="chartCounts" class="chart-counts">Total: 0 | New: 0 | Old: 0 | Partial: 0</div>
+        </div>
+        <!-- === end sidebar chart === -->
 
         <hr>
 
@@ -455,6 +572,8 @@
 
           <div class="d-grid gap-2 mt-3">
             <button id="exportBuildingsBtn" class="btn btn-outline-secondary btn-sm" disabled>Export Buildings GeoJSON (login required)</button>
+            <button id="exportCSVBtn" class="btn btn-outline-secondary btn-sm" disabled>Export Buildings CSV (login required)</button>
+            <button id="openLayerManager" class="btn btn-outline-info btn-sm">Layer Manager</button>
             <button id="resetViewBtn" class="btn btn-secondary btn-sm">Reset Map View</button>
           </div>
         </div>
@@ -465,14 +584,14 @@
 
       <div class="col-md-9 p-0 position-relative">
         <div id="map"></div>
-        
+
         <!-- Custom fullscreen toggle button -->
         <div class="custom-fullscreen-toggle" id="customFullscreenToggle" title="Toggle full-screen controls">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V8M21 8V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H16M16 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V16M3 16V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        
+
         <div class="legend-card">
           <div style="font-weight:700;margin-bottom:6px">Legend</div>
           <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><div style="width:18px;height:10px;background:#00ff00;border:1px solid #000"></div>Old Buildings</div>
@@ -483,6 +602,24 @@
           <div style="display:flex;gap:8px;align-items:center"><div style="width:30px;height:3px;background:#ffff00"></div>Block Boundary</div>
           <div style="display:flex;gap:8px;align-items:center"><div style="width:30px;height:3px;border-top:3px dashed #0000ff"></div>Old Block (dashed)</div>
           <div style="display:flex;gap:8px;align-items:center"><div style="width:30px;height:3px;background:#00ff00"></div>Sub Block</div>
+        </div>
+
+        <!-- Side Panel for feature info -->
+        <div id="sidePanel" class="side-panel" role="region" aria-label="Feature information panel">
+          <div class="panel-header">
+            <div style="font-weight:700" id="sidePanelTitle">Feature Details</div>
+            <div>
+              <button id="sidePanelClose" class="btn btn-sm btn-outline-secondary" title="Close">Close</button>
+            </div>
+          </div>
+          <div class="attributes" id="sidePanelBody">
+            <div class="small-muted">Click a building or boundary to see details here.</div>
+          </div>
+
+          <div style="margin-top:auto;padding-top:8px;display:flex;gap:8px">
+            <button id="zoomToFeatureBtn" class="btn btn-sm btn-primary">Zoom to feature</button>
+            <button id="exportFeatureGeoBtn" class="btn btn-sm btn-outline-secondary">Export feature (.geojson)</button>
+          </div>
         </div>
       </div>
     </div>
@@ -568,6 +705,23 @@
     </div>
   </div>
 
+  <!-- Layer Manager Modal (new) -->
+  <div class="modal fade" id="layerManagerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Layer Manager</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="layer-manager-list" id="layerManagerList">
+            <!-- populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Libraries (LOAD THESE FIRST) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -575,12 +729,18 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
 
-  <!-- Main app script -->
+  <!-- Turf.js (spatial operations) -->
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
+  <!-- Main app script (extends prior logic without breaking it) -->
   <script>
   (function(){
     // Configuration
     const CONFIG = {
       MAX_FILE_SIZE: 50 * 1024 * 1024,
+      WEBWORKER_THRESHOLD: 5 * 1024 * 1024, // >5MB parse in worker
       LABEL_ZOOM_THRESHOLD: 14,
       DEFAULT_CENTER: [19.2183, 72.9781],
       DEFAULT_ZOOM: 14,
@@ -599,7 +759,7 @@
       escapeHtml: function(s) {
         return String(s).replace(/[&<>"']/g, c => '&#' + c.charCodeAt(0) + ';');
       },
-      
+
       showLoading: function(message = 'Loading...') {
         const loader = document.createElement('div');
         loader.className = 'loading-overlay';
@@ -612,12 +772,12 @@
         document.body.appendChild(loader);
         return loader;
       },
-      
+
       hideLoading: function() {
         const loader = document.querySelector('.loading-overlay');
         if (loader) loader.remove();
       },
-      
+
       validateFile: function(file) {
         if (!file) throw new Error('No file provided');
         if (file.size > CONFIG.MAX_FILE_SIZE) throw new Error('File too large (max 50MB)');
@@ -626,10 +786,63 @@
         }
         return true;
       },
-      
+
+      // readFile: returns Promise that resolves to parsed JSON
       readFile: function(file) {
         return new Promise((resolve, reject) => {
-          Utils.validateFile(file);
+          try {
+            Utils.validateFile(file);
+          } catch (err) {
+            reject(err);
+            return;
+          }
+
+          // If file > threshold and worker available, parse in worker
+          if (window.Worker && file.size > CONFIG.WEBWORKER_THRESHOLD) {
+            const workerCode = `
+              self.onmessage = function(e) {
+                const fileBlob = e.data;
+                const reader = new FileReader();
+                reader.onload = function() {
+                  try {
+                    const json = JSON.parse(reader.result);
+                    self.postMessage({ ok: true, data: json });
+                  } catch(err) {
+                    self.postMessage({ ok: false, error: 'Invalid JSON format: ' + (err.message || err) });
+                  }
+                };
+                reader.onerror = function() {
+                  self.postMessage({ ok: false, error: 'File read error' });
+                };
+                reader.readAsText(fileBlob);
+              };
+            `;
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            const worker = new Worker(URL.createObjectURL(blob));
+            const onMessage = (m) => {
+              if (m.data && m.data.ok) {
+                resolve(m.data.data);
+              } else {
+                reject(new Error(m.data && m.data.error ? m.data.error : 'Worker parse error'));
+              }
+              worker.terminate();
+            };
+            worker.onmessage = onMessage;
+            worker.onerror = (err) => {
+              worker.terminate();
+              const reader = new FileReader();
+              reader.onload = () => {
+                try { const json = JSON.parse(reader.result); resolve(json); }
+                catch (e) { reject(new Error('Invalid JSON format')); }
+              };
+              reader.onerror = () => reject(new Error('File read error'));
+              reader.readAsText(file);
+            };
+            worker.postMessage(file);
+            return;
+          }
+
+          // fallback: main thread
           const reader = new FileReader();
           reader.onload = () => {
             try {
@@ -643,7 +856,7 @@
           reader.readAsText(file);
         });
       },
-      
+
       normalizeGeoJSON: function(data) {
         if (!data) return null;
         if (data.type === 'Feature') data = { type: 'FeatureCollection', features: [data] };
@@ -658,7 +871,7 @@
     // --------- Toast Manager ----------
     const ToastManager = {
       toastsEl: document.getElementById('toasts'),
-      
+
       show: function(msg, type = 'success', ttl = 3000) {
         const d = document.createElement('div');
         d.className = `toast-item ${type}`;
@@ -668,42 +881,269 @@
       }
     };
 
+    // --------- Chart Manager ----------
+    const ChartManager = {
+      sidebarChart: null,
+      fullscreenChart: null,
+      currentAreaName: 'All Buildings',
+      currentStats: { total: 0, new: 0, old: 0, partial: 0, nulls: 0 },
+
+      init: function() {
+        // Initialize sidebar chart first
+        this.createSidebarChart();
+
+        // Fullscreen chart may be created when fullscreen controls are created.
+        // If already present, create it as well.
+        if (document.getElementById('fullscreenChartCanvas')) {
+          this.createFullscreenChart();
+        }
+      },
+
+      createSidebarChart: function() {
+        const canvas = document.getElementById('buildingChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        this.sidebarChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['New', 'Old', 'Partial', 'Others'],
+            datasets: [{
+              data: [0, 0, 0, 0],
+              backgroundColor: ['#ff0000', '#00ff00', '#ffb6c1', '#cfcfcf'],
+              borderColor: ['#cc0000', '#00cc00', '#ff9999', '#999999'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return `${value} buildings (${percentage}%)`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Number of Buildings'
+                }
+              }
+            }
+          }
+        });
+      },
+
+      createFullscreenChart: function() {
+        const canvas = document.getElementById('fullscreenChartCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        // if already created, skip
+        if (this.fullscreenChart) return;
+
+        this.fullscreenChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['New', 'Old', 'Partial', 'Others'],
+            datasets: [{
+              data: [0, 0, 0, 0],
+              backgroundColor: ['#ff0000', '#00ff00', '#ffb6c1', '#cfcfcf'],
+              borderColor: ['#cc0000', '#00cc00', '#ff9999', '#999999'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.raw || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return `${value} buildings (${percentage}%)`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Number of Buildings'
+                }
+              }
+            }
+          }
+        });
+      },
+
+      updateCharts: function(stats, areaName = 'All Buildings') {
+        // Store
+        this.currentStats = stats;
+        this.currentAreaName = areaName;
+
+        // Sidebar DOM updates
+        const areaEl = document.getElementById('chartAreaName');
+        const countsEl = document.getElementById('chartCounts');
+        if (areaEl) areaEl.textContent = areaName;
+        if (countsEl) countsEl.innerHTML =
+          `Total: ${stats.total} | New: ${stats.new} | Old: ${stats.old} | Partial: ${stats.partial}`;
+
+        // Fullscreen DOM updates
+        const fsAreaEl = document.getElementById('fullscreenChartAreaName');
+        const fsCountsEl = document.getElementById('fullscreenChartCounts');
+        if (fsAreaEl) fsAreaEl.textContent = areaName;
+        if (fsCountsEl) fsCountsEl.innerHTML =
+          `Total: ${stats.total} | New: ${stats.new} | Old: ${stats.old} | Partial: ${stats.partial}`;
+
+        // Update chart datasets (both charts)
+        const dataArr = [stats.new, stats.old, stats.partial, stats.nulls];
+        if (this.sidebarChart) {
+          this.sidebarChart.data.datasets[0].data = dataArr;
+          try { this.sidebarChart.update(); } catch(e){ /* ignore */ }
+        }
+        if (this.fullscreenChart) {
+          this.fullscreenChart.data.datasets[0].data = dataArr;
+          try { this.fullscreenChart.update(); } catch(e){ /* ignore */ }
+        }
+      },
+
+      calculateOverallStats: function(buildingData) {
+        if (!buildingData || !buildingData.features) {
+          return { total: 0, new: 0, old: 0, partial: 0, nulls: 0 };
+        }
+
+        const stats = { total: 0, new: 0, old: 0, partial: 0, nulls: 0 };
+
+        buildingData.features.forEach(building => {
+          if (!building || !building.properties) return;
+
+          stats.total++;
+          const remark = (building.properties.Remark || building.properties.remark || '').toString().toLowerCase().trim();
+
+          if (remark.includes('new')) {
+            stats.new++;
+          } else if (remark.includes('old')) {
+            stats.old++;
+          } else if (remark.includes('part') || remark.includes('partial')) {
+            stats.partial++;
+          } else {
+            stats.nulls++;
+          }
+        });
+
+        return stats;
+      },
+
+      calculateAreaStats: function(areaFeature, buildingData) {
+        if (!buildingData || !buildingData.features || !areaFeature) {
+          return { total: 0, new: 0, old: 0, partial: 0, nulls: 0 };
+        }
+
+        const stats = { total: 0, new: 0, old: 0, partial: 0, nulls: 0 };
+
+        buildingData.features.forEach(building => {
+          try {
+            if (!building || !building.geometry) return;
+
+            const intersects = turf.booleanIntersects(areaFeature, building);
+            if (intersects) {
+              stats.total++;
+              const remark = (building.properties.Remark || building.properties.remark || '').toString().toLowerCase().trim();
+
+              if (remark.includes('new')) {
+                stats.new++;
+              } else if (remark.includes('old')) {
+                stats.old++;
+              } else if (remark.includes('part') || remark.includes('partial')) {
+                stats.partial++;
+              } else {
+                stats.nulls++;
+              }
+            }
+          } catch (e) {
+            console.warn('Error checking building intersection:', e);
+          }
+        });
+
+        return stats;
+      },
+
+      getAreaName: function(feature, type) {
+        if (!feature || !feature.properties) return 'Selected Area';
+
+        const props = feature.properties;
+        let name = '';
+
+        if (type === 'zones') {
+          name = props.Name || props.NAME || 'Zone';
+        } else if (type === 'blocks') {
+          name = props.New_Block1 || props.New_Block_1 || props.BlockName || props.Block || 'Block';
+        } else if (type === 'oldblocks') {
+          name = props.Block || 'Old Block';
+        } else if (type === 'subblocks') {
+          name = props.Name || props.NAME || 'Sub Block';
+        } else {
+          name = 'Selected Area';
+        }
+
+        return name;
+      }
+    };
+
     // --------- Full-screen Controls Manager ----------
     const FullscreenManager = {
       controlsContainer: null,
       isVisible: false,
-      
+
       init: function() {
         this.createControls();
         this.setupEventListeners();
       },
-      
+
       createControls: function() {
-        // Create controls container
         this.controlsContainer = L.DomUtil.create('div', 'fullscreen-controls-container');
-        
-        // Add header with close button
+
         const header = L.DomUtil.create('div', 'fullscreen-controls-header', this.controlsContainer);
         header.innerHTML = 'Map Controls';
-        
+
         const closeBtn = L.DomUtil.create('button', 'fullscreen-controls-close', header);
         closeBtn.innerHTML = '×';
         closeBtn.title = 'Close controls';
-        
-        // Add search section
+
         const searchContainer = L.DomUtil.create('div', 'fullscreen-search', this.controlsContainer);
         const searchInput = L.DomUtil.create('input', '', searchContainer);
         searchInput.type = 'text';
         searchInput.placeholder = 'Search buildings...';
         searchInput.id = 'fullscreenSearchInput';
-        
+
         const searchButton = L.DomUtil.create('button', '', searchContainer);
         searchButton.innerHTML = 'Search';
         searchButton.id = 'fullscreenSearchBtn';
-        
-        // Add layers section
+
         const layersContainer = L.DomUtil.create('div', 'fullscreen-layers', this.controlsContainer);
-        
+
         const layers = [
           { id: 'fullscreenBuildingsCheckbox', label: '🏢 Buildings', value: 'buildings' },
           { id: 'fullscreenZonesCheckbox', label: '🔴 Zones', value: 'zones' },
@@ -711,7 +1151,7 @@
           { id: 'fullscreenOldBlocksCheckbox', label: '🔵 Old Blocks', value: 'oldblocks' },
           { id: 'fullscreenSubBlocksCheckbox', label: '🟢 Sub Blocks', value: 'subblocks' }
         ];
-        
+
         layers.forEach(layer => {
           const toggleContainer = L.DomUtil.create('div', 'fullscreen-layer-toggle', layersContainer);
           const checkbox = L.DomUtil.create('input', '', toggleContainer);
@@ -719,109 +1159,118 @@
           checkbox.id = layer.id;
           checkbox.value = layer.value;
           checkbox.checked = true;
-          
+
           const label = L.DomUtil.create('label', '', toggleContainer);
           label.innerHTML = layer.label;
           label.setAttribute('for', layer.id);
         });
-        
-        // Add to map as a custom control
+
+        const fsChartWrap = L.DomUtil.create('div', 'fullscreen-chart-container', this.controlsContainer);
+        fsChartWrap.innerHTML = `
+          <div class="chart-title" style="margin-top:6px">Building Statistics</div>
+          <div id="fullscreenChartAreaName" class="chart-area-name">All Buildings</div>
+          <canvas id="fullscreenChartCanvas" class="fullscreen-chart-canvas"></canvas>
+          <div id="fullscreenChartCounts" class="chart-counts" style="font-size:12px">Total: 0 | New: 0 | Old: 0 | Partial: 0</div>
+        `;
+
         FullscreenManager.control = L.control({position: 'topleft'});
         FullscreenManager.control.onAdd = function(map) {
           return FullscreenManager.controlsContainer;
         };
         FullscreenManager.control.addTo(MapManager.map);
-        
-        // Initially hide the controls
+
         this.hideControls();
+
+        if (window.ChartManager && window.ChartManager.createFullscreenChart) {
+          try { ChartManager.createFullscreenChart(); } catch (e) { /* ignore */ }
+        }
       },
-      
+
       setupEventListeners: function() {
-        // Toggle full-screen controls
         document.getElementById('customFullscreenToggle').addEventListener('click', () => {
           this.toggleControls();
         });
-        
-        // Close button
+
         this.controlsContainer.querySelector('.fullscreen-controls-close').addEventListener('click', () => {
           this.hideControls();
         });
-        
-        // Full-screen search
+
         document.getElementById('fullscreenSearchBtn').addEventListener('click', () => {
           const query = document.getElementById('fullscreenSearchInput').value;
           DataManager.searchBuildings(query);
         });
-        
+
         document.getElementById('fullscreenSearchInput').addEventListener('keydown', e => {
           if (e.key === 'Enter') {
             const query = e.target.value;
             DataManager.searchBuildings(query);
           }
         });
-        
-        // Full-screen layer toggles
+
         document.getElementById('fullscreenBuildingsCheckbox').addEventListener('change', (e) => {
           MapManager.toggleLayer('buildings', e.target.checked);
           document.getElementById('buildingsCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('fullscreenZonesCheckbox').addEventListener('change', (e) => {
           MapManager.toggleLayer('zones', e.target.checked);
           document.getElementById('zonesCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('fullscreenBlocksCheckbox').addEventListener('change', (e) => {
           MapManager.toggleLayer('blocks', e.target.checked);
           document.getElementById('blocksCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('fullscreenOldBlocksCheckbox').addEventListener('change', (e) => {
           MapManager.toggleLayer('oldblocks', e.target.checked);
           document.getElementById('oldBlocksCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('fullscreenSubBlocksCheckbox').addEventListener('change', (e) => {
           MapManager.toggleLayer('subblocks', e.target.checked);
           document.getElementById('subBlocksCheckbox').checked = e.target.checked;
         });
-        
-        // Sync full-screen controls with sidebar changes
+
         document.getElementById('buildingsCheckbox').addEventListener('change', (e) => {
           document.getElementById('fullscreenBuildingsCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('zonesCheckbox').addEventListener('change', (e) => {
           document.getElementById('fullscreenZonesCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('blocksCheckbox').addEventListener('change', (e) => {
           document.getElementById('fullscreenBlocksCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('oldBlocksCheckbox').addEventListener('change', (e) => {
           document.getElementById('fullscreenOldBlocksCheckbox').checked = e.target.checked;
         });
-        
+
         document.getElementById('subBlocksCheckbox').addEventListener('change', (e) => {
           document.getElementById('fullscreenSubBlocksCheckbox').checked = e.target.checked;
         });
       },
-      
+
       showControls: function() {
         if (this.controlsContainer) {
           this.controlsContainer.style.display = 'flex';
           this.isVisible = true;
+          try {
+            ChartManager.createFullscreenChart();
+            ChartManager.updateCharts(ChartManager.currentStats, ChartManager.currentAreaName);
+          } catch(e){ /* ignore */ }
         }
       },
-      
+
       hideControls: function() {
         if (this.controlsContainer) {
           this.controlsContainer.style.display = 'none';
           this.isVisible = false;
         }
       },
-      
+
       toggleControls: function() {
         if (this.isVisible) {
           this.hideControls();
@@ -835,15 +1284,15 @@
     const AuthManager = {
       loginModal: null,
       registerModal: null,
-      
+
       init: function() {
         this.loginModal = new bootstrap.Modal(document.getElementById('loginModal'), { keyboard: true });
         this.registerModal = new bootstrap.Modal(document.getElementById('registerModal'), { keyboard: true });
-        
+
         this.setupEventListeners();
         this.loadSavedUser();
       },
-      
+
       loadUsers: function() {
         try {
           const raw = localStorage.getItem(CONFIG.STORAGE_KEYS.USERS);
@@ -857,11 +1306,11 @@
           return [...CONFIG.DEMO_USERS];
         }
       },
-      
+
       saveUsers: function(users) {
         localStorage.setItem(CONFIG.STORAGE_KEYS.USERS, JSON.stringify(users));
       },
-      
+
       renderAuthUI: function(userObj) {
         const authArea = document.getElementById('authArea');
         if (userObj) {
@@ -885,14 +1334,15 @@
           });
         }
       },
-      
+
       enableAuthControls: function(enabled) {
         document.getElementById('loadDataButton').disabled = !enabled;
         document.getElementById('exportBuildingsBtn').disabled = !enabled;
+        document.getElementById('exportCSVBtn').disabled = !enabled;
         document.getElementById('loadDataButton').textContent = enabled ? 'Load Data' : 'Load Data (login required)';
         document.getElementById('exportBuildingsBtn').textContent = enabled ? 'Export Buildings GeoJSON' : 'Export Buildings GeoJSON (login required)';
       },
-      
+
       setLoggedIn: function(userObj, remember) {
         if (remember) localStorage.setItem(CONFIG.STORAGE_KEYS.CURRENT_USER, JSON.stringify(userObj));
         else localStorage.removeItem(CONFIG.STORAGE_KEYS.CURRENT_USER);
@@ -902,14 +1352,14 @@
         this.loginModal.hide();
         this.registerModal.hide();
       },
-      
+
       logout: function() {
         localStorage.removeItem(CONFIG.STORAGE_KEYS.CURRENT_USER);
         this.renderAuthUI(null);
         this.enableAuthControls(false);
         ToastManager.show('Logged out', 'success', 1500);
       },
-      
+
       loadSavedUser: function() {
         const savedUserRaw = localStorage.getItem(CONFIG.STORAGE_KEYS.CURRENT_USER);
         if (savedUserRaw) {
@@ -931,7 +1381,7 @@
           this.enableAuthControls(false);
         }
       },
-      
+
       setupEventListeners: function() {
         document.getElementById('openRegisterFromLogin')?.addEventListener('click', (e) => {
           e.preventDefault();
@@ -939,14 +1389,14 @@
           document.getElementById('registerAlert').classList.add('d-none');
           this.registerModal.show();
         });
-        
+
         document.getElementById('guestBtn').addEventListener('click', () => {
           this.loginModal.hide();
           this.enableAuthControls(false);
           this.renderAuthUI(null);
           ToastManager.show('Continuing as Guest (upload/export disabled)', 'success', 2500);
         });
-        
+
         document.getElementById('loginForm').addEventListener('submit', (e) => {
           e.preventDefault();
           const users = this.loadUsers();
@@ -954,7 +1404,7 @@
           const pwd = document.getElementById('loginPassword').value;
           const remember = document.getElementById('rememberMe').checked;
           const user = users.find(u => u.username === uname && u.password === pwd);
-          
+
           if (user) {
             this.setLoggedIn({ username: user.username, name: user.name }, remember);
           } else {
@@ -963,43 +1413,43 @@
             loginAlert.textContent = 'Invalid username or password';
           }
         });
-        
+
         document.getElementById('registerForm').addEventListener('submit', (e) => {
           e.preventDefault();
           const registerAlert = document.getElementById('registerAlert');
           registerAlert.classList.add('d-none');
-          
+
           const name = document.getElementById('registerName').value.trim();
           const username = document.getElementById('registerUsername').value.trim();
           const pwd = document.getElementById('registerPassword').value;
           const pwd2 = document.getElementById('registerPasswordConfirm').value;
           const remember = document.getElementById('registerRemember').checked;
-          
+
           if (!name || !username || !pwd || !pwd2) {
             registerAlert.classList.remove('d-none');
             registerAlert.textContent = 'Please fill all fields';
             return;
           }
-          
+
           if (pwd.length < 6) {
             registerAlert.classList.remove('d-none');
             registerAlert.textContent = 'Password must be at least 6 characters';
             return;
           }
-          
+
           if (pwd !== pwd2) {
             registerAlert.classList.remove('d-none');
             registerAlert.textContent = 'Passwords do not match';
             return;
           }
-          
+
           const users = this.loadUsers();
           if (users.find(u => u.username === username)) {
             registerAlert.classList.remove('d-none');
             registerAlert.textContent = 'Username already exists';
             return;
           }
-          
+
           const newUser = { username, password: pwd, name };
           users.push(newUser);
           this.saveUsers(users);
@@ -1027,22 +1477,26 @@
         oldblocks: []
       },
       data: {
-        buildings: null
+        buildings: null,
+        zones: null,
+        blocks: null,
+        oldblocks: null,
+        subblocks: null
       },
       fuse: null,
-      
+
       init: function() {
         this.createMap();
         this.setupEventListeners();
       },
-      
+
       createMap: function() {
         this.map = L.map('map', {
           center: CONFIG.DEFAULT_CENTER,
           zoom: CONFIG.DEFAULT_ZOOM,
           fullscreenControl: true
         });
-        
+
         this.basemaps = {
           'Satellite': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             attribution: 'Tiles &copy; Esri',
@@ -1053,57 +1507,55 @@
             maxZoom: 19
           })
         };
-        
+
         this.basemaps['Satellite'].addTo(this.map);
         L.control.scale({ position: 'bottomleft' }).addTo(this.map);
-        
-        // Add zoom event listener for labels
+
         this.map.on('zoomend', () => this.handleZoomChange());
       },
-      
+
       setupEventListeners: function() {
         document.getElementById('basemapSelect').addEventListener('change', (e) => {
           this.changeBasemap(e.target.value);
         });
-        
+
         document.getElementById('opacitySlider').addEventListener('input', (e) => {
           document.getElementById('opacityVal').textContent = e.target.value;
           this.updateBuildingOpacity(parseFloat(e.target.value));
         });
-        
+
         document.getElementById('resetViewBtn').addEventListener('click', () => {
           this.resetView();
         });
-        
-        // Layer toggles
+
         document.getElementById('zonesCheckbox').addEventListener('change', (e) => {
           this.toggleLayer('zones', e.target.checked);
         });
-        
+
         document.getElementById('blocksCheckbox').addEventListener('change', (e) => {
           this.toggleLayer('blocks', e.target.checked);
         });
-        
+
         document.getElementById('oldBlocksCheckbox').addEventListener('change', (e) => {
           this.toggleLayer('oldblocks', e.target.checked);
         });
-        
+
         document.getElementById('subBlocksCheckbox').addEventListener('change', (e) => {
           this.toggleLayer('subblocks', e.target.checked);
         });
-        
+
         document.getElementById('buildingsCheckbox').addEventListener('change', (e) => {
           this.toggleLayer('buildings', e.target.checked);
         });
       },
-      
+
       changeBasemap: function(basemapName) {
         Object.values(this.basemaps).forEach(b => {
           if (this.map.hasLayer(b)) this.map.removeLayer(b);
         });
         this.basemaps[basemapName].addTo(this.map);
       },
-      
+
       updateBuildingOpacity: function(opacity) {
         if (this.layers.buildings) {
           this.layers.buildings.eachLayer(layer => {
@@ -1113,34 +1565,32 @@
           });
         }
       },
-      
+
       resetView: function() {
         this.map.setView(CONFIG.DEFAULT_CENTER, CONFIG.DEFAULT_ZOOM);
       },
-      
+
       toggleLayer: function(layerName, visible) {
         const layer = this.layers[layerName];
         if (!layer) return;
-        
+
         if (visible) {
           this.map.addLayer(layer);
-          // Handle labels for specific layers
           if (['zones', 'blocks', 'oldblocks'].includes(layerName)) {
             this.toggleLabels(this.labels[layerName], visible);
           }
         } else {
           this.map.removeLayer(layer);
-          // Hide labels when layer is hidden
           if (['zones', 'blocks', 'oldblocks'].includes(layerName)) {
             this.toggleLabels(this.labels[layerName], false);
           }
         }
       },
-      
+
       toggleLabels: function(labelsArray, show) {
         const zoom = this.map.getZoom();
         const showLabels = show && zoom > CONFIG.LABEL_ZOOM_THRESHOLD;
-        
+
         labelsArray.forEach(labelObj => {
           try {
             if (showLabels) {
@@ -1151,12 +1601,11 @@
           } catch(e) { /* Ignore errors */ }
         });
       },
-      
+
       handleZoomChange: function() {
         const zoom = this.map.getZoom();
         const show = zoom > CONFIG.LABEL_ZOOM_THRESHOLD;
-        
-        // Update labels based on current layer visibility
+
         if (document.getElementById('zonesCheckbox').checked) {
           this.toggleLabels(this.labels.zones, show);
         }
@@ -1167,7 +1616,7 @@
           this.toggleLabels(this.labels.oldblocks, show);
         }
       },
-      
+
       // Geometry utility functions
       flattenCoords: function(coords, out) {
         out = out || [];
@@ -1179,7 +1628,7 @@
         }
         return out;
       },
-      
+
       centroidFromCoordsPairs: function(pairs) {
         if (!pairs || !pairs.length) return null;
         let sumX = 0, sumY = 0;
@@ -1196,7 +1645,7 @@
         if (count === 0) return null;
         return { lat: sumY / count, lng: sumX / count };
       },
-      
+
       getFeatureCenterLatLng: function(feature) {
         try {
           if (!feature || !feature.geometry) return null;
@@ -1207,14 +1656,13 @@
             if (!c || c.length < 2) return null;
             return { lat: c[1], lng: c[0] };
           }
-          // For MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon - flatten and average
           const pairs = this.flattenCoords(geom.coordinates);
           return this.centroidFromCoordsPairs(pairs);
         } catch(e) {
           return null;
         }
       },
-      
+
       createLabelTooltip: function(text, latlng) {
         if (!text || !latlng) return null;
         try {
@@ -1230,7 +1678,7 @@
           return null;
         }
       },
-      
+
       getBuildingStyle: function(feature) {
         const p = feature.properties || {};
         const remark = (p.Remark || p.remark || '').toString().toLowerCase().trim();
@@ -1246,7 +1694,7 @@
           opacity: 0.8
         };
       },
-      
+
       createBuildingPopupContent: function(props) {
         const name = props.Society_Na || props.Society_na || props.NAME || props.name || 'Building';
         const id = props.NAME || props.name || 'N/A';
@@ -1259,7 +1707,7 @@
           </table>
         `;
       },
-      
+
       createBoundaryPopupContent: function(props, title) {
         let rows = '';
         for (const [k, v] of Object.entries(props || {})) {
@@ -1267,7 +1715,7 @@
         }
         return `<div style="font-weight:600;margin-bottom:6px">${title}</div><table style="font-size:13px">${rows}</table>`;
       },
-      
+
       blinkFeature: function(layer) {
         if (this.currentHighlight) this.map.removeLayer(this.currentHighlight);
         const feature = layer.feature || (layer.toGeoJSON && layer.toGeoJSON());
@@ -1280,7 +1728,7 @@
           }
         }).addTo(this.map);
         this.currentHighlight = highlight;
-        
+
         let count = 0;
         const iv = setInterval(() => {
           const op = (count % 2 === 0) ? 0.15 : 0.7;
@@ -1299,15 +1747,18 @@
           }
         }, 333);
       },
-      
+
       addGeoJSONToMap: function(data, type) {
         if (!data) return null;
-        
+
         const onEachFeature = (feature, layer) => {
           if (type === 'buildings') {
             layer.bindPopup(this.createBuildingPopupContent(feature.properties || {}));
             layer.on('click', () => {
               this.blinkFeature(layer);
+              SidePanel.showFeature(feature, layer);
+              const stats = ChartManager.calculateOverallStats(this.data.buildings);
+              ChartManager.updateCharts(stats, 'Selected Building');
             });
           } else {
             const titleMap = {
@@ -1317,26 +1768,29 @@
               subblocks: 'Sub Block Boundary'
             };
             layer.bindPopup(this.createBoundaryPopupContent(feature.properties || {}, titleMap[type] || type));
-            
+
+            layer.on('click', () => {
+              SidePanel.showFeature(feature, layer, titleMap[type] || type);
+              const stats = ChartManager.calculateAreaStats(feature, this.data.buildings);
+              const areaName = ChartManager.getAreaName(feature, type);
+              ChartManager.updateCharts(stats, areaName);
+            });
+
             if (['zones', 'blocks', 'oldblocks'].includes(type)) {
-              // Compute center for label placement
               const center = this.getFeatureCenterLatLng(feature);
               if (center && Number.isFinite(center.lat) && Number.isFinite(center.lng)) {
-                // Choose field based on type
                 let labelText = '';
                 if (type === 'zones') labelText = feature.properties?.Name || feature.properties?.NAME || '';
                 else if (type === 'blocks') labelText = feature.properties?.New_Block1 || feature.properties?.New_Block_1 || feature.properties?.BlockName || '';
                 else if (type === 'oldblocks') labelText = feature.properties?.Block || '';
-                // Fallback to generic if field missing
                 if (!labelText) labelText = titleMap[type] || '';
-                
+
                 const tooltip = this.createLabelTooltip(labelText, center);
                 if (tooltip) {
                   if (type === 'zones') this.labels.zones.push({ tt: tooltip, parent: layer });
                   if (type === 'blocks') this.labels.blocks.push({ tt: tooltip, parent: layer });
                   if (type === 'oldblocks') this.labels.oldblocks.push({ tt: tooltip, parent: layer });
-                  
-                  // Only add to map if layer is added and zoom is appropriate
+
                   const layerVisible = this.map.hasLayer(layer);
                   if (layerVisible && this.map.getZoom() > CONFIG.LABEL_ZOOM_THRESHOLD) {
                     tooltip.addTo(this.map);
@@ -1346,7 +1800,7 @@
             }
           }
         };
-        
+
         if (type === 'buildings') {
           const geo = L.geoJSON(data, {
             style: this.getBuildingStyle.bind(this),
@@ -1356,14 +1810,14 @@
           geo.addTo(this.map);
           return geo;
         }
-        
+
         const styleMap = {
           zones: { color: '#ff0000', weight: 3, fillOpacity: 0, opacity: 0.8 },
           blocks: { color: '#ffff00', weight: 2, fillOpacity: 0, opacity: 0.8 },
           oldblocks: { color: '#0000ff', weight: 2, fillOpacity: 0, dashArray: '5,10', opacity: 0.8 },
           subblocks: { color: '#00ff00', weight: 1, fillOpacity: 0, opacity: 0.8 }
         };
-        
+
         const layer = L.geoJSON(data, {
           style: styleMap[type] || {},
           onEachFeature: onEachFeature
@@ -1371,7 +1825,7 @@
         layer.addTo(this.map);
         return layer;
       },
-      
+
       removeLayerSafely: function(layer) {
         if (!layer) return;
         try {
@@ -1380,7 +1834,7 @@
           console.warn('Error removing layer:', e);
         }
       },
-      
+
       removeTooltipsArray: function(arr) {
         for (const obj of arr) {
           try {
@@ -1389,18 +1843,18 @@
         }
         arr.length = 0;
       },
-      
+
       clearAllLayers: function() {
         this.removeLayerSafely(this.layers.buildings);
         this.removeLayerSafely(this.layers.zones);
         this.removeLayerSafely(this.layers.blocks);
         this.removeLayerSafely(this.layers.oldblocks);
         this.removeLayerSafely(this.layers.subblocks);
-        
+
         this.removeTooltipsArray(this.labels.zones);
         this.removeTooltipsArray(this.labels.blocks);
         this.removeTooltipsArray(this.labels.oldblocks);
-        
+
         this.layers = {
           buildings: null,
           zones: null,
@@ -1408,13 +1862,20 @@
           oldblocks: null,
           subblocks: null
         };
-        
-        this.data.buildings = null;
+
+        this.data = {
+          buildings: null,
+          zones: null,
+          blocks: null,
+          oldblocks: null,
+          subblocks: null
+        };
+
         this.fuse = null;
       },
-      
+
       fitToBounds: function() {
-        if (this.layers.buildings && this.layers.buildings.getBounds && 
+        if (this.layers.buildings && this.layers.buildings.getBounds &&
             this.layers.buildings.getLayers().length) {
           try {
             this.map.fitBounds(this.layers.buildings.getBounds(), { padding: [20, 20] });
@@ -1423,7 +1884,7 @@
           }
         }
       },
-      
+
       setupSearchIndex: function() {
         if (!this.data.buildings) return;
         try {
@@ -1443,35 +1904,133 @@
         } catch (e) {
           this.fuse = null;
         }
+      },
+
+      /* === NEW: focus helper to zoom + popup + side-panel on a building feature === */
+      focusBuildingFeature: function(feature) {
+        if (!feature || !this.layers.buildings) return;
+
+        // Try to find the corresponding Leaflet layer
+        let targetLayer = null;
+        try {
+          this.layers.buildings.eachLayer(l => {
+            if (!targetLayer && l.feature === feature) targetLayer = l;
+          });
+        } catch(e){ /* ignore */ }
+
+        // Center/zoom
+        const center = this.getFeatureCenterLatLng(feature);
+        if (center) this.map.setView([center.lat, center.lng], 19);
+
+        // Open popup + side panel + blink
+        if (targetLayer) {
+          if (targetLayer.openPopup) targetLayer.openPopup();
+          try { SidePanel.showFeature(feature, targetLayer); } catch(e){}
+          this.blinkFeature(targetLayer);
+        } else {
+          // Fallback temporary highlight
+          const temp = L.geoJSON(feature, { style: { color: '#ff6600', weight: 3, fillOpacity: 0.3 } }).addTo(this.map);
+          setTimeout(() => { this.map.removeLayer(temp); }, 3000);
+        }
       }
     };
 
-    // --------- Data Manager ----------
+    // --------- Side Panel ----------
+    const SidePanel = {
+      panel: document.getElementById('sidePanel'),
+      titleEl: document.getElementById('sidePanelTitle'),
+      bodyEl: document.getElementById('sidePanelBody'),
+      currentFeature: null,
+      currentLayer: null,
+
+      init: function() {
+        document.getElementById('sidePanelClose').addEventListener('click', () => this.hide());
+        document.getElementById('zoomToFeatureBtn').addEventListener('click', () => {
+          if (!this.currentLayer || !this.currentFeature) return;
+          try {
+            const layer = this.currentLayer;
+            if (layer.getBounds) {
+              MapManager.map.fitBounds(layer.getBounds(), { maxZoom: 18 });
+            } else if (layer.getLatLng) {
+              MapManager.map.setView(layer.getLatLng(), 18);
+            }
+            if (layer.openPopup) layer.openPopup();
+            MapManager.blinkFeature(layer);
+          } catch (e) { /* ignore */ }
+        });
+
+        document.getElementById('exportFeatureGeoBtn').addEventListener('click', () => {
+          if (!this.currentFeature) return;
+          const blob = new Blob([JSON.stringify(this.currentFeature)], { type: 'application/json' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = `feature_export_${Date.now()}.geojson`;
+          link.click();
+          ToastManager.show('Feature exported', 'success', 1800);
+        });
+      },
+
+      showFeature: function(feature, layer, title) {
+        this.currentFeature = feature;
+        this.currentLayer = layer;
+
+        const props = feature.properties || {};
+        const titleText = title || (props.Society_Na || props.Society_na || props.NAME || props.name || 'Feature');
+        this.titleEl.textContent = titleText;
+
+        const rows = [];
+        for (const k of Object.keys(props)) {
+          const v = props[k];
+          if (v === null || v === undefined) continue;
+          let safeVal = '';
+          if (typeof v === 'object') {
+            safeVal = Utils.escapeHtml(JSON.stringify(v));
+          } else {
+            safeVal = Utils.escapeHtml(String(v));
+          }
+          rows.push(`<div><strong>${Utils.escapeHtml(k)}:</strong> ${safeVal}</div>`);
+        }
+        if (!rows.length) {
+          this.bodyEl.innerHTML = '<div class="small-muted">No attributes available</div>';
+        } else {
+          this.bodyEl.innerHTML = rows.join('');
+        }
+
+        this.panel.classList.add('open');
+      },
+
+      hide: function() {
+        this.panel.classList.remove('open');
+        this.currentFeature = null;
+        this.currentLayer = null;
+      }
+    };
+
+    // --------- Data Manager (extended search & area stats) ----------
     const DataManager = {
       async loadDataFromFiles() {
         const loadBtn = document.getElementById('loadDataButton');
         loadBtn.disabled = true;
         loadBtn.textContent = 'Loading...';
-        
+
         const loader = Utils.showLoading('Processing files...');
-        
+
         try {
           const buildingFile = document.getElementById('buildingFile').files[0];
           if (!buildingFile) throw new Error('Please upload the Building Footprints file (required)');
-          
+
           const buildingRaw = await Utils.readFile(buildingFile);
           const buildingNorm = Utils.normalizeGeoJSON(buildingRaw);
           if (!buildingNorm || !buildingNorm.features.length) {
             throw new Error('No valid building features found in the file');
           }
-          
-          // Load optional layers
+
           let zonesNorm = null, blocksNorm = null, oldblocksNorm = null, subblocksNorm = null;
           const zoneFile = document.getElementById('zoneFile').files[0];
           const blockFile = document.getElementById('blockFile').files[0];
           const oldBlockFile = document.getElementById('oldBlockFile').files[0];
           const subBlockFile = document.getElementById('subBlockFile').files[0];
-          
+
           if (zoneFile) {
             const raw = await Utils.readFile(zoneFile);
             zonesNorm = Utils.normalizeGeoJSON(raw);
@@ -1488,202 +2047,294 @@
             const raw = await Utils.readFile(subBlockFile);
             subblocksNorm = Utils.normalizeGeoJSON(raw);
           }
-          
-          // Clear existing layers
+
           MapManager.clearAllLayers();
-          
-          // Add new layers to map
+
           MapManager.layers.buildings = MapManager.addGeoJSONToMap(buildingNorm, 'buildings');
           MapManager.layers.zones = zonesNorm ? MapManager.addGeoJSONToMap(zonesNorm, 'zones') : null;
           MapManager.layers.blocks = blocksNorm ? MapManager.addGeoJSONToMap(blocksNorm, 'blocks') : null;
           MapManager.layers.oldblocks = oldblocksNorm ? MapManager.addGeoJSONToMap(oldblocksNorm, 'oldblocks') : null;
           MapManager.layers.subblocks = subblocksNorm ? MapManager.addGeoJSONToMap(subblocksNorm, 'subblocks') : null;
-          
-          // Fit map to building bounds
+
           MapManager.fitToBounds();
-          
-          // Store building data and setup search
+
           MapManager.data.buildings = buildingNorm;
+          MapManager.data.zones = zonesNorm;
+          MapManager.data.blocks = blocksNorm;
+          MapManager.data.oldblocks = oldblocksNorm;
+          MapManager.data.subblocks = subblocksNorm;
+
           MapManager.setupSearchIndex();
-          
-          // Update status
-          let statusText = `Loaded — Buildings: ${buildingNorm.features.length}`;
-          if (zonesNorm) statusText += `, Zones: ${zonesNorm.features.length}`;
-          if (blocksNorm) statusText += `, Blocks: ${blocksNorm.features.length}`;
-          document.getElementById('statusText').textContent = statusText;
-          
-          ToastManager.show('Data loaded successfully', 'success', 2500);
-          
+
+          const overall = ChartManager.calculateOverallStats(buildingNorm);
+          ChartManager.updateCharts(overall, 'All Buildings');
+
+          document.getElementById('statusText').textContent = 'Data loaded';
+          ToastManager.show('Files loaded successfully', 'success', 2200);
         } catch (err) {
-          console.error('Data loading error:', err);
-          ToastManager.show('Error: ' + err.message, 'error', 6000);
+          ToastManager.show(err.message || 'Failed to load files', 'error', 4000);
+          console.error(err);
         } finally {
           Utils.hideLoading();
-          const saved = localStorage.getItem(CONFIG.STORAGE_KEYS.CURRENT_USER);
-          if (saved) {
-            loadBtn.disabled = false;
-            loadBtn.textContent = 'Load Data';
-          } else {
-            loadBtn.disabled = true;
-            loadBtn.textContent = 'Load Data (login required)';
-          }
+          loadBtn.disabled = false;
+          loadBtn.textContent = 'Load Data';
         }
       },
-      
+
       exportBuildingsData: function() {
-        if (!MapManager.data.buildings) {
-          ToastManager.show('No building data to export', 'error', 2000);
-          return;
-        }
-        
-        const blob = new Blob([JSON.stringify(MapManager.data.buildings)], { type: 'application/json' });
+        const data = MapManager.data.buildings;
+        if (!data) return ToastManager.show('No building data to export', 'warning', 2000);
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = `buildings_export_${Date.now()}.geojson`;
         link.click();
-        
-        ToastManager.show('Building data exported successfully', 'success', 2000);
+        ToastManager.show('Buildings exported', 'success', 1800);
       },
-      
+
+      exportBuildingsCSV: function() {
+        const data = MapManager.data.buildings;
+        if (!data) return ToastManager.show('No building data to export', 'warning', 2000);
+        const features = data.features || [];
+        if (!features.length) return ToastManager.show('No building features', 'warning', 2000);
+
+        const keys = new Set();
+        features.forEach(f => {
+          const props = f.properties || {};
+          Object.keys(props).forEach(k => keys.add(k));
+        });
+        const keyArr = Array.from(keys);
+        const rows = [keyArr.join(',')];
+        features.forEach(f => {
+          const props = f.properties || {};
+          const row = keyArr.map(k => {
+            const v = props[k];
+            if (v === null || v === undefined) return '';
+            return `"${String(v).replace(/"/g,'""')}"`;
+          }).join(',');
+          rows.push(row);
+        });
+
+        const csv = rows.join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `buildings_export_${Date.now()}.csv`;
+        link.click();
+        ToastManager.show('CSV exported', 'success', 1800);
+      },
+
+      /* === UPDATED: search now auto-zooms + opens popup for best match === */
       searchBuildings: function(query) {
-        if (!MapManager.data.buildings || !MapManager.data.buildings.features.length) {
-          ToastManager.show('No building data loaded', 'error', 2000);
+        const resultsEl = document.getElementById('searchResults');
+
+        if (!query) {
+          resultsEl.innerHTML = '<div class="small-muted">Enter search text</div>';
           return;
         }
-        
-        if (!query || !query.trim()) {
-          ToastManager.show('Enter search text', 'error', 2000);
+        if (!MapManager.fuse || !MapManager.data.buildings) {
+          resultsEl.innerHTML = '<div class="small-muted">No index available</div>';
           return;
         }
-        
-        const q = query.trim();
-        let results = [];
-        
-        if (MapManager.fuse) {
-          const fuseResults = MapManager.fuse.search(q, { limit: 10 });
-          results = fuseResults.map(r => r.item || r);
-        } else {
-          const lower = q.toLowerCase();
-          results = MapManager.data.buildings.features.filter(feat => {
-            const p = feat.properties || {};
-            return (p.NAME && p.NAME.toString().toLowerCase().includes(lower)) ||
-                   (p.name && p.name.toString().toLowerCase().includes(lower)) ||
-                   (p.Society_Na && p.Society_Na.toString().toLowerCase().includes(lower)) ||
-                   (p.Society_na && p.Society_na.toString().toLowerCase().includes(lower)) ||
-                   (p.Remark && p.Remark.toString().toLowerCase().includes(lower)) ||
-                   (p.remark && p.remark.toString().toLowerCase().includes(lower));
-          }).slice(0, 10);
-        }
-        
+
+        const results = MapManager.fuse.search(query, { limit: 10 });
         if (!results.length) {
-          document.getElementById('searchResults').innerHTML = 'No results found';
-          ToastManager.show('No results found', 'error', 1500);
+          resultsEl.innerHTML = '<div class="small-muted">No results</div>';
           return;
         }
-        
-        const listHtml = results.map((feat, idx) => {
-          const p = feat.properties || {};
-          const id = p.NAME || p.name || 'N/A';
-          const nm = p.Society_Na || p.Society_na || p.NAME || p.name || 'Unnamed';
-          const status = p.Remark || p.remark || 'N/A';
-          return `
-            <div class="search-result-item" data-idx="${idx}" style="padding:6px;border-bottom:1px solid #eee;cursor:pointer">
-              <div style="font-weight:600">${nm}</div>
-              <div style="font-size:12px;color:#777">ID: ${id} | Status: ${status}</div>
-            </div>
-          `;
+
+        const html = results.map(r => {
+          const props = r.item.properties || {};
+          const label = props.Society_Na || props.NAME || props.name || props.Society_na || 'Building';
+          return `<div class="search-result-item" data-idx="${r.refIndex}">${Utils.escapeHtml(label)}</div>`;
         }).join('');
-        
-        document.getElementById('searchResults').innerHTML = listHtml;
-        
-        // Add click handlers to search results
-        const items = Array.from(document.querySelectorAll('.search-result-item'));
-        items.forEach((el, i) => {
+        resultsEl.innerHTML = html;
+
+        // Attach click handlers (also open popup + panel)
+        Array.from(document.querySelectorAll('.search-result-item')).forEach(el => {
           el.addEventListener('click', () => {
-            const feat = results[Number(el.getAttribute('data-idx'))];
-            this.zoomToFeature(feat);
+            const idx = Number(el.getAttribute('data-idx'));
+            const feat = MapManager.data.buildings.features[idx];
+            if (!feat) return;
+            MapManager.focusBuildingFeature(feat);
           });
         });
-        
-        // Auto-zoom to first result
-        if (results.length > 0) {
-          setTimeout(() => {
-            this.zoomToFeature(results[0]);
-          }, 200);
+
+        // === Auto-focus best match immediately ===
+        try {
+          const q = String(query).trim().toLowerCase();
+          let chosenIdx = results[0].refIndex;
+
+          // try exact match by ID/name fields
+          for (const r of results) {
+            const p = r.item.properties || {};
+            const candidates = [p.NAME, p.name, p.Society_Na, p.Society_na];
+            if (candidates.some(v => v && String(v).trim().toLowerCase() === q)) {
+              chosenIdx = r.refIndex;
+              break;
+            }
+          }
+
+          const feature = MapManager.data.buildings.features[chosenIdx];
+          if (feature) {
+            MapManager.focusBuildingFeature(feature);
+          }
+        } catch(e) { /* ignore */ }
+      }
+    };
+
+    // --------- UI Helpers (dropzone + layer manager) ----------
+    const UIHelpers = {
+      initDropzone: function() {
+        const dz = document.getElementById('dropzone');
+        const fileInputs = ['buildingFile','zoneFile','blockFile','oldBlockFile','subBlockFile'].map(id => document.getElementById(id));
+        dz.addEventListener('click', () => {
+          document.getElementById('buildingFile').click();
+        });
+
+        dz.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dz.classList.add('dragover');
+        });
+        dz.addEventListener('dragleave', () => {
+          dz.classList.remove('dragover');
+        });
+
+        dz.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dz.classList.remove('dragover');
+          const items = e.dataTransfer.files;
+          if (!items || !items.length) return;
+          for (let i = 0; i < items.length && i < fileInputs.length; i++) {
+            const f = items[i];
+            fileInputs[i].files = createFileList(f);
+            ToastManager.show(`Assigned ${f.name} to upload slot ${i+1}`, 'success', 1500);
+          }
+        });
+
+        function createFileList(file) {
+          try {
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            return dt.files;
+          } catch (e) {
+            ToastManager.show('Your browser may not support programmatic file assignment; please use the file input directly', 'warning', 4500);
+            return undefined;
+          }
         }
       },
-      
-      zoomToFeature: function(feature) {
-        let found = false;
-        
-        if (MapManager.layers.buildings) {
-          MapManager.layers.buildings.eachLayer(layer => {
-            const p = layer.feature && layer.feature.properties;
-            const keyA = (p && (p.NAME || p.name || '')).toString();
-            const keyB = (feature.properties.NAME || feature.properties.name || '').toString();
-            
-            if (keyA === keyB) {
-              if (layer.getBounds) {
-                MapManager.map.fitBounds(layer.getBounds(), { maxZoom: 18 });
-              } else if (layer.getLatLng) {
-                MapManager.map.setView(layer.getLatLng(), 18);
-              }
-              
-              if (layer.openPopup) layer.openPopup();
-              MapManager.blinkFeature(layer);
-              found = true;
+
+      refreshLayerManager: function() {
+        const modalList = document.getElementById('layerManagerList');
+        modalList.innerHTML = '';
+        const layers = [
+          { key: 'buildings', name: 'Buildings' },
+          { key: 'zones', name: 'Zones' },
+          { key: 'blocks', name: 'Blocks' },
+          { key: 'oldblocks', name: 'Old Blocks' },
+          { key: 'subblocks', name: 'Sub Blocks' }
+        ];
+        layers.forEach(item => {
+          const li = document.createElement('div');
+          li.className = 'layer-item';
+          const visible = MapManager.layers[item.key] && MapManager.map.hasLayer(MapManager.layers[item.key]);
+          li.innerHTML = `
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="checkbox" class="layer-man-toggle" data-key="${item.key}" ${visible ? 'checked' : ''} />
+              <div>${item.name}</div>
+            </div>
+            <div>
+              <input type="range" min="0" max="1" step="0.05" value="${item.key === 'buildings' ? document.getElementById('opacitySlider').value : 1}" data-key="${item.key}" class="layer-opacity" />
+            </div>
+          `;
+          modalList.appendChild(li);
+        });
+
+        Array.from(document.querySelectorAll('.layer-man-toggle')).forEach(cb => {
+          cb.addEventListener('change', (e) => {
+            const key = e.target.getAttribute('data-key');
+            const checked = e.target.checked;
+            const sidebarCheckboxId = {
+              buildings: 'buildingsCheckbox',
+              zones: 'zonesCheckbox',
+              blocks: 'blocksCheckbox',
+              oldblocks: 'oldBlocksCheckbox',
+              subblocks: 'subBlocksCheckbox'
+            }[key];
+            if (sidebarCheckboxId) {
+              document.getElementById(sidebarCheckboxId).checked = checked;
+              MapManager.toggleLayer(key, checked);
             }
           });
-        }
-        
-        if (!found) {
-          ToastManager.show('Feature found in data but not located on map', 'warning', 2000);
-        }
+        });
+
+        Array.from(document.querySelectorAll('.layer-opacity')).forEach(r => {
+          r.addEventListener('input', (e) => {
+            const key = e.target.getAttribute('data-key');
+            const val = parseFloat(e.target.value);
+            if (key === 'buildings' && MapManager.layers.buildings) {
+              MapManager.updateBuildingOpacity(val);
+              document.getElementById('opacitySlider').value = val;
+              document.getElementById('opacityVal').textContent = val;
+            }
+          });
+        });
       }
     };
 
     // --------- Application Initialization ----------
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize managers
       AuthManager.init();
       MapManager.init();
+      ChartManager.init();
       FullscreenManager.init();
-      
-      // Set up remaining event listeners
+      SidePanel.init();
+      UIHelpers.initDropzone();
+
       document.getElementById('loadDataButton').addEventListener('click', () => {
         DataManager.loadDataFromFiles();
       });
-      
+
       document.getElementById('exportBuildingsBtn').addEventListener('click', () => {
         DataManager.exportBuildingsData();
       });
-      
+
+      document.getElementById('exportCSVBtn').addEventListener('click', () => {
+        DataManager.exportBuildingsCSV();
+      });
+
       document.getElementById('searchBtn').addEventListener('click', () => {
         DataManager.searchBuildings(document.getElementById('searchInput').value);
       });
-      
+
       document.getElementById('searchInput').addEventListener('keydown', e => {
         if (e.key === 'Enter') {
           DataManager.searchBuildings(e.target.value);
         }
       });
-      
-      // Keyboard shortcuts
+
+      document.getElementById('openLayerManager').addEventListener('click', () => {
+        UIHelpers.refreshLayerManager();
+        const modal = new bootstrap.Modal(document.getElementById('layerManagerModal'));
+        modal.show();
+      });
+
       document.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
           e.preventDefault();
           document.getElementById('searchInput').focus();
         }
       });
-      
-      // Prevent click propagation in sidebar
+
       L.DomEvent.disableClickPropagation(document.getElementById('sidebar'));
-      
-      // Show welcome message
+
       ToastManager.show('Welcome — upload Building Footprints and other layers to start', 'success', 3500);
     });
 
+    window.__TMC = { MapManager, DataManager, AuthManager, Utils, SidePanel, ChartManager, FullscreenManager };
+
   })();
   </script>
+
 </body>
 </html>
